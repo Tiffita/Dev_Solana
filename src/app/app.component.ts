@@ -16,6 +16,6 @@ import { HdWalletMultiButtonComponent } from '@heavy-duty/wallet-adapter-materia
     </header>
 
     <main></main>
-    `
+    `,
 })
 export class AppComponent {}
