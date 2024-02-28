@@ -1,21 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatAnchor } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { HdWalletMultiButtonComponent } from '@heavy-duty/wallet-adapter-material';
+import { computedAsync } from 'ngxtension/computed-async';
+import { ShyftApiService } from './shyft-api.service';
 
 @Component({
   standalone: true,
   imports: [RouterModule, HdWalletMultiButtonComponent],
   selector: 'org2-root',
-  template: `
-    <header class="px-16 pt-24 pb-8">
-      <h1 class="text-center text-5xl mb-4">My Bank</h1>
-
-      <div class="flex justify-center">
-        <hd-wallet-multi-button></hd-wallet-multi-button>
-      </div>
-    </header>
-
-    <main></main>
-    `,
+  templateUrl: './app.component.html'
 })
-export class AppComponent {}
+export class AppComponent {
+  private readonly _shyftApiService = inject(ShyftApiService);
+  private readonly _walletStore = inject(WalletStore);
+  private readonly _publicKey = toSignal(this._walletStore.publicKey$);
+
+  readonly account = computedAsync(
+    () => this._shyftApiService.getAccount(this._publicKey()?.toBase58()),
+    { requireSync: true },
+  )
+}

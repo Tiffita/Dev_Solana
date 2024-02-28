@@ -1,0 +1,22 @@
+<section>
+	<h2 class="text-center text-3xl">Home Page</h2>
+	<p class="text-center">Welcome to the home page!</p>
+  </section>
+  <header class="px-16 pt-24 pb-8">
+	<h1 class="text-center text-5xl mb-4">My Bank</h1>
+
+	@if (account()) {
+	  <div class="absolute top-4 left-4 flex items-center gap-2">
+		<img [src]="account()?.info?.image" class="w-8 h-8" />
+		<p class="text-2xl font-bold">
+		  {{ account()?.balance }}
+		</p>
+	  </div>
+	}
+
+	<div class="flex justify-center">
+	  <hd-wallet-multi-button></hd-wallet-multi-button>
+	</div>
+  </header>
+
+  <main></main>
